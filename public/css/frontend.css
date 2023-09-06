@@ -1,0 +1,23 @@
+body {
+    background: #eaeaea91;
+}
+div.loginRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+div.loginRow  div div.card {
+    box-shadow: inset 0px 0px 8px 7px greenyellow;
+    padding: 25px;
+}
+button.btn.form-control.loginBtn {
+    background: linear-gradient(90deg, rgb(174 120 210 / 97%) 16%, rgb(234 61 61) 66%, rgba(252,176,69,1) 100%);
+    font-weight: bold;
+    color: white;
+}
+button.btn.form-control.loginBtn:hover{
+     background: linear-gradient(90deg,rgba(252,176,69,1) 16%,rgb(234 61 61) 66%,rgb(174 120 210 / 97%) 100%);
+     color: black;
+}
