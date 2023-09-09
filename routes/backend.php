@@ -59,6 +59,7 @@ Route::middleware([customerAuth::class])->group(function(){
         Route::get("/salProductShow",[salesController::class,"salProductShow"])->name("admin.salProductShow");
 
         Route::post("/invAddProShow",[salesController::class,"invAddProShow"])->name("admin.invAddProShow");
+        
         Route::post("/InvProductAdd",[salesController::class,"InvProductAdd"])->name("admin.InvProductAdd");
 
        Route::post("/productPick",[salesController::class,"productPick"])->name("admin.productPick");

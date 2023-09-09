@@ -4,11 +4,8 @@ namespace App\Http\Controllers\backendController;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\customer;
-use App\Models\product;
-use App\Models\invoice;
+use App\Models\{customer,product,invoice,sales};
 use Carbon\Carbon;
-use App\Models\sales;
 class salesController extends Controller
 {
     function salesPage(){
@@ -42,13 +39,16 @@ class salesController extends Controller
     }
     function createSales(Request $request){
         $date = Carbon::now()->format("d-m-Y");
-        $cusPickId    = $request->salCusPickId;
+        
+        $cusPickId = $request->salCusPickId;
         $cusPickData  = customer::findOrFail($cusPickId);
         $invTotalTaka = $request->inputTotalTaka;
         $invPayTaka   = $request->inputPayTaka;
         $invVatTaka   = $request->InputVatTaka;
         $invDisTaka   = $request->InputDisTaka;
 
+
+        $proId   = $request->InvAddid;
         $ProName = $request->name;
         $ProQty  = $request->qty;
         $ProRate = $request->rate;
@@ -65,7 +65,7 @@ class salesController extends Controller
             "date"     => $date
         ]);
 
-        for ($x = 0; $x < count($ProName); $x++) {
+        for ($x = 0; $x < count($proId); $x++) {
            sales::create([
                 "name"       => $ProName[$x],
                 "quantity"   => $ProQty[$x],
@@ -74,6 +74,13 @@ class salesController extends Controller
                 "invoice_id" => $Invoice->id,
                 "date"       => $date
             ]);
+
+            $UpPro = product::findOrFail([$proId[$x]]);
+            foreach($UpPro as $UpPro){
+                $UpQty = $UpPro->quantity - $ProQty[$x];
+                $UpPro->quantity = $UpQty;
+                $UpPro->save();
+            }
         } 
 
 

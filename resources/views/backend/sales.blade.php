@@ -94,6 +94,7 @@
                <table class="table ">
                   <thead class="thead">
                      <tr>
+                        <th>Id</th>
                         <th>Name</th>
                         <th>Qty</th>
                         <th>Rate</th>
@@ -256,7 +257,7 @@ var qtyProSumModal = new mdb.Modal(qtyProSum)
 
 function salProductShow() {
    var salProShowTbody = document.querySelector(".salProShowTbody");
-   var url = "/admin/salProductShow";
+   var url = "{{ route('admin.salProductShow') }}";
    axios.get(url)
       .then(function(response) {
          if (response.status == 200) {
@@ -297,7 +298,7 @@ function salProductShow() {
 }
 
 function InvAddProShow(InvAddProId) {
-   var url = "/admin/invAddProShow";
+   var url = "{{ route('admin.invAddProShow') }}";
    axios.post(url, {
          InvAddProId: InvAddProId
       })
@@ -331,7 +332,7 @@ function InvAddProduct() {
       } else {
          InvAddProBtn.innerHTML = loader;
          InvAddProBtn.style.width = '100px';
-         var url = "/admin/InvProductAdd";
+         var url = "{{ route('admin.InvProductAdd') }}";
          var data = new FormData(InvAddProForm)
          axios.post(url, data)
             .then(function(response) {
@@ -343,6 +344,8 @@ function InvAddProduct() {
                   var RateParseInt = parseInt(InvJsonApeend.InvaddProRate);
                   var QtyParseInt = parseInt(InvJsonApeend.InvaddProQty);
                   var totalQtyRate = QtyParseInt * RateParseInt;
+                  var id = "<td><input type='number' name='InvAddid[]' value="+InvJsonApeend.invAddProId+"></td>";
+
                   var name = "<td><input type='text' name='name[]' value=" + InvJsonApeend.InvaddProName + "></td>";
                   var Qty = "<td><input type='number' name='qty[]' value=" + QtyParseInt + "></td>";
                   var rate = "<td><input type='number' name='rate[]' value=" + RateParseInt + "></td>";
@@ -350,7 +353,7 @@ function InvAddProduct() {
                   var action = " <td ><button data-total=" + totalQtyRate + " class='btn btn-outline-danger removeEle deleteBtn'>Remove</button></td>";
                   var createTr = document.createElement("tr");
                   createTr.classList.add("trRow");
-                  createTr.innerHTML = name + Qty + rate + total + action;
+                  createTr.innerHTML = id+name + Qty + rate + total + action;
                   salProTbody.appendChild(createTr);
 
                   function TotalAmount() {
@@ -426,14 +429,18 @@ function CreateSalesForm() {
    CreSalesForm.addEventListener("submit", function(e) {
       e.preventDefault();
       var SalCustomer = document.querySelector(".salCusPickId");
+      var salProTbody = document.querySelectorAll(".salProTbody tr");
+
       if (SalCustomer.value == "") {
          toastr.error("please Customer Select")
-      } else {
-         var url = "/admin/createSales";
-         var data = new FormData(CreSalesForm)
-         axios.post(url, data)
-            .then(function(response) {
-               if (response.status == 200) {
+      }else if(salProTbody.length === 0){
+         toastr.error("please Product Pick")
+      }else{
+          var url = "{{ route('admin.createSales') }}";
+          var data = new FormData(CreSalesForm)
+          axios.post(url, data)
+          .then(function(response) {
+              if (response.status == 200) {
                   window.open('/admin/invoicePage', "_self");
                } else {
                   Swal.fire("Sorry", "Your Sales Faild", "error")
@@ -441,9 +448,11 @@ function CreateSalesForm() {
             })
             .catch(function(error) {
                Swal.fire("Sorry", "Your Sales Faild", "error")
-            })
-      }
+            });
+        }
    })
 }
+
+
 </script>
 @endsection
