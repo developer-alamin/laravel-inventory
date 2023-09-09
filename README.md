@@ -10,10 +10,10 @@ This is Laravel Inventory Website. It's build with Only Laravel and minimum numb
 
 ### To run in local machine
 ## > Run this commands
-1.git clone https://github.com/developer-alamin/laravel-inventory
-2.cd laravel-inventory
-3.composer install
-4.php artisan migrate or php artisan migrate:refresh --seed
+- 1.git clone https://github.com/developer-alamin/laravel-inventory
+- 2.cd laravel-inventory
+- 3.composer install
+- 4.php artisan migrate or php artisan migrate:refresh --seed
 
 ## Techonology used in the project
 
